@@ -1,0 +1,28 @@
+{
+    "authors": [
+        {
+            "name": "taoyu",
+            "email": "1255803549@qq.com",
+            "homepage": "https://github.com/ty666",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "symfony/finder": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ty666\\CdnPusher\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ty666\\CdnPusher\\CdnPusherServiceProvider"
+            ]
+        }
+    }
+}

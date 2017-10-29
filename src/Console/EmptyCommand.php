@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Ty666\CdnPusher\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;

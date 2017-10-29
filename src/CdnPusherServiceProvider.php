@@ -2,11 +2,11 @@
 
 namespace Ty666\CdnPusher;
 
-use App\Console\Commands\EmptyCommand;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Finder\Finder;
 use Ty666\CdnPusher\Asset\ExcludeAsset;
 use Ty666\CdnPusher\Asset\IncludeAsset;
+use Ty666\CdnPusher\Console\EmptyCommand;
 use Ty666\CdnPusher\Console\PushCommand;
 
 class CdnPusherServiceProvider extends ServiceProvider

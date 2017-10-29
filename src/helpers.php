@@ -8,7 +8,7 @@ if (!function_exists('cdn')) {
         if ($useCdn) {
             return Storage::cloud()->url($path);
         } else {
-            return config('app.url') . '/' . trim($path, '/');
+            return asset($path);
         }
     }
 }

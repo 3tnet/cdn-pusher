@@ -1,4 +1,6 @@
 {
+    "name": "ty666/cdn-pusher",
+    "description": "cdn pusher for laravel",
     "authors": [
         {
             "name": "taoyu",

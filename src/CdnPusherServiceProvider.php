@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Finder\Finder;
 use Ty666\CdnPusher\Asset\ExcludeAsset;
 use Ty666\CdnPusher\Asset\IncludeAsset;
-use Ty666\CdnPusher\Console\EmptyCommand;
+use Ty666\CdnPusher\Console\ClearCommand;
 use Ty666\CdnPusher\Console\PushCommand;
 
 class CdnPusherServiceProvider extends ServiceProvider
@@ -26,7 +26,7 @@ class CdnPusherServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/cdn.php' => config_path('cdn.php'),
+            __DIR__ . '/../config/cdn.php' => config_path('cdn.php'),
         ]);
     }
 
@@ -37,7 +37,7 @@ class CdnPusherServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Cdn::class, function (){
+        $this->app->singleton(Cdn::class, function () {
             $config = config('cdn');
             $includeAsset = new IncludeAsset($config['include']);
             $excludeAsset = new ExcludeAsset($config['exclude']);
@@ -46,16 +46,17 @@ class CdnPusherServiceProvider extends ServiceProvider
         $this->registerCommand();
     }
 
-    public function registerCommand(){
-        $this->app->singleton('cdn_pusher.push', function (){
+    public function registerCommand()
+    {
+        $this->app->singleton('cdn_pusher.push', function () {
             return new PushCommand($this->app->make(Cdn::class));
         });
         $this->commands('cdn_pusher.push');
 
-        $this->app->singleton('cdn_pusher.empty', function (){
-            return new EmptyCommand($this->app->make(Cdn::class));
+        $this->app->singleton('cdn_pusher.clear', function () {
+            return new ClearCommand($this->app->make(Cdn::class));
         });
-        $this->commands('cdn_pusher.empty');
+        $this->commands('cdn_pusher.clear');
     }
 
     /**

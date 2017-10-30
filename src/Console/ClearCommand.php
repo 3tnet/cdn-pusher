@@ -6,21 +6,21 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Ty666\CdnPusher\Cdn;
 
-class EmptyCommand extends Command
+class ClearCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cdn:empty';
+    protected $signature = 'cdn:clear';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Empty all assets from CDN';
+    protected $description = 'clear all assets from CDN';
 
     protected $cdn;
 
@@ -42,17 +42,6 @@ class EmptyCommand extends Command
      */
     public function handle()
     {
-        $cdnFilesystem = Storage::cloud();
-        $assets = $this->cdn->getAssets();
-        $bar = $this->output->createProgressBar(count($assets));
-        foreach ($assets as $assetFile) {
-            if ($cdnFilesystem->exists($assetFile->getRelativePathname())) {
-                $cdnFilesystem->delete($assetFile->getRelativePathname());
-            }
-            $bar->advance();
-            $this->info("已删除：" . $assetFile->getRealPath());
-
-        }
-        $bar->finish();
+        $this->clearCdn($this->output);
     }
 }

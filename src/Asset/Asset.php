@@ -19,7 +19,7 @@ abstract class Asset implements AssetContract
     public function init($configurations)
     {
         $this->directories = $configurations['directories'];
-        $this->extensions = $configurations['directories'];
+        $this->extensions = $configurations['extensions'];
         $this->patterns = $configurations['patterns'];
     }
 

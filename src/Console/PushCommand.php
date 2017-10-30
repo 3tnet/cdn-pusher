@@ -41,22 +41,7 @@ class PushCommand extends Command
      */
     public function handle()
     {
-        $cdnFilesystem = Storage::cloud();
-        $assets = $this->cdn->getAssets();
-        $bar = $this->output->createProgressBar(count($assets));
-        foreach ($assets as $assetFile) {
-            if ($cdnFilesystem->exists($assetFile->getRelativePathname())) {
-                $cdnFilesystem->update($assetFile->getRelativePathname(), file_get_contents($assetFile->getRealPath()));
-            } else {
-                $cdnFilesystem->put($assetFile->getRelativePathname(), file_get_contents($assetFile->getRealPath()));
-            }
-
-            $bar->advance();
-            $this->info("已上传：" . $assetFile->getRealPath());
-
-        }
-        $bar->finish();
+        $this->cdn->pushCdn($this->output);
     }
-
 
 }

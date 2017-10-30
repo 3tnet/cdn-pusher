@@ -2,9 +2,11 @@
 
 namespace Ty666\CdnPusher;
 
+use Illuminate\Console\OutputStyle;
 use Symfony\Component\Finder\Finder;
 use Ty666\CdnPusher\Contracts\ExcludeAsset;
 use Ty666\CdnPusher\Contracts\IncludeAsset;
+use Illuminate\Support\Facades\Storage;
 
 class Cdn
 {
@@ -13,9 +15,12 @@ class Cdn
     public function __construct(Finder $finder, IncludeAsset $includeAsset, ExcludeAsset $excludeAsset)
     {
         $this->finder = $finder;
+        $this->resolveInclude($includeAsset);
+        $this->resolveExclude($excludeAsset);
     }
 
-    protected function resolveInclude(IncludeAsset $includeAsset){
+    protected function resolveInclude(IncludeAsset $includeAsset)
+    {
         $this->finder->files()->in($includeAsset->getDirectories());
 
         foreach ($includeAsset->getExtensions() as $extension) {
@@ -26,7 +31,8 @@ class Cdn
         }
     }
 
-    protected function resolveExclude(ExcludeAsset $excludeAsset){
+    protected function resolveExclude(ExcludeAsset $excludeAsset)
+    {
         $this->finder->exclude($excludeAsset->getDirectories());
         foreach ($excludeAsset->getFiles() as $file) {
             $this->finder->notName($file);
@@ -40,7 +46,50 @@ class Cdn
         $this->finder->ignoreDotFiles($excludeAsset->needHidden());
     }
 
+    public function pushCdn(OutputStyle $output = null)
+    {
+        $cdnFilesystem = Storage::cloud();
+        if (!is_null($output))
+            $bar = $output->createProgressBar($this->finder->count());
 
+        foreach ($this->finder as $assetFile) {
+            if ($cdnFilesystem->exists($assetFile->getRelativePathname())) {
+                $cdnFilesystem->update($assetFile->getRelativePathname(), file_get_contents($assetFile->getRealPath()));
+            } else {
+                $cdnFilesystem->put($assetFile->getRelativePathname(), file_get_contents($assetFile->getRealPath()));
+            }
+
+            if (!is_null($output)) {
+                $bar->advance();
+                $output->comment("已上传：" . $assetFile->getRealPath());
+            }
+        }
+        if (!is_null($output))
+            $bar->finish();
+    }
+
+    public function clearCdn(OutputStyle $output = null)
+    {
+        $cdnFilesystem = $this->getCloudFilesystem();
+        if (!is_null($output))
+            $bar = $output->createProgressBar($this->finder->count());
+        foreach ($this->finder as $assetFile) {
+            if ($cdnFilesystem->exists($assetFile->getRelativePathname())) {
+                $cdnFilesystem->delete($assetFile->getRelativePathname());
+            }
+            if (!is_null($output)) {
+                $bar->advance();
+                $this->info("已删除：" . $assetFile->getRealPath());
+            }
+        }
+        if (!is_null($output))
+            $bar->finish();
+    }
+
+    protected function getCloudFilesystem()
+    {
+        return Storage::cloud();
+    }
 
     public function getAssets()
     {

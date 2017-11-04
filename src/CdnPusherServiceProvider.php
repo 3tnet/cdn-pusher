@@ -12,7 +12,7 @@ use Ty666\CdnPusher\Console\PushCommand;
 class CdnPusherServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
+     * Indicates if loading of the provider is deferared.
      *
      * @var bool
      */

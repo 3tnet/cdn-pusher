@@ -9,7 +9,7 @@
 ```
 'providers' => array(
      //...
-     Vinelab\Cdn\CdnServiceProvider::class,
+     Ty666\CdnPusher\CdnPusherServiceProvider::class,
 ),
 ```
 

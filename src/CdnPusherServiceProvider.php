@@ -25,9 +25,18 @@ class CdnPusherServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->setupConfig();
+    }
+
+    public function setupConfig()
+    {
+        $source = realpath(__DIR__ . '/../config/cdn.php');
+
         $this->publishes([
-            __DIR__ . '/../config/cdn.php' => config_path('cdn.php'),
+            $source => config_path('cdn.php'),
         ]);
+
+        $this->mergeConfigFrom($source, 'cdn');
     }
 
     /**

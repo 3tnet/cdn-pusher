@@ -49,8 +49,10 @@ class Cdn
     public function pushCdn(OutputStyle $output = null)
     {
         $cdnFilesystem = Storage::cloud();
-        if (!is_null($output))
+        if (!is_null($output)) {
             $bar = $output->createProgressBar($this->finder->count());
+            $bar->setFormat('%current% [%bar%] %message%');
+        }
 
         foreach ($this->finder as $assetFile) {
             if ($assetFile->isLink()) {
@@ -63,8 +65,8 @@ class Cdn
             }
 
             if (!is_null($output)) {
+                $output->setMessage('已上传：' . $assetFile->getRealPath());
                 $bar->advance();
-                $output->comment("已上传：" . $assetFile->getRealPath());
             }
         }
         if (!is_null($output))

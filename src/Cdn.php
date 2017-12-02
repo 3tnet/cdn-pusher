@@ -71,15 +71,18 @@ class Cdn
     public function clearCdn(OutputStyle $output = null)
     {
         $cdnFilesystem = $this->getCloudFilesystem();
-        if (!is_null($output))
+        if (!is_null($output)) {
             $bar = $output->createProgressBar($this->finder->count());
+            $bar->setFormat('%current% [%bar%] %message%');
+        }
+
         foreach ($this->finder as $assetFile) {
             if ($cdnFilesystem->exists($assetFile->getRelativePathname())) {
                 $cdnFilesystem->delete($assetFile->getRelativePathname());
             }
             if (!is_null($output)) {
+                $bar->setMessage('已删除：' . $assetFile->getRealPath());
                 $bar->advance();
-                $this->info("已删除：" . $assetFile->getRealPath());
             }
         }
         if (!is_null($output))

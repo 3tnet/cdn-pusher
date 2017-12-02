@@ -51,7 +51,7 @@ class Cdn
         $cdnFilesystem = Storage::cloud();
         if (!is_null($output)) {
             $bar = $output->createProgressBar($this->finder->count());
-            $bar->setFormat('%current% [%bar%] %message%');
+            $bar->setFormat('%current%/%max% [%bar%] %message%');
         }
 
         foreach ($this->finder as $assetFile) {
@@ -78,7 +78,7 @@ class Cdn
         $cdnFilesystem = $this->getCloudFilesystem();
         if (!is_null($output)) {
             $bar = $output->createProgressBar($this->finder->count());
-            $bar->setFormat('%current% [%bar%] %message%');
+            $bar->setFormat('%current%/%max% [%bar%] %message%');
         }
 
         foreach ($this->finder as $assetFile) {

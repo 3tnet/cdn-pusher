@@ -53,6 +53,9 @@ class Cdn
             $bar = $output->createProgressBar($this->finder->count());
 
         foreach ($this->finder as $assetFile) {
+            if ($assetFile->isLink()) {
+                continue;
+            }
             if ($cdnFilesystem->exists($assetFile->getRelativePathname())) {
                 $cdnFilesystem->update($assetFile->getRelativePathname(), file_get_contents($assetFile->getRealPath()));
             } else {

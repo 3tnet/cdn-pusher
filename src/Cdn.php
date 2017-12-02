@@ -65,7 +65,7 @@ class Cdn
             }
 
             if (!is_null($output)) {
-                $output->setMessage('已上传：' . $assetFile->getRealPath());
+                $bar->setMessage('已上传：' . $assetFile->getRealPath());
                 $bar->advance();
             }
         }

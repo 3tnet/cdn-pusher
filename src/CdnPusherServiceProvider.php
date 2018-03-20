@@ -46,11 +46,15 @@ class CdnPusherServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Cdn::class, function ($rule = null) {
+        $this->app->bind(Cdn::class, function ($app, $params = null) {
             $config = config('cdn');
-            if (is_null($rule)) {
+
+            if (is_null($params['rule'])) {
                 $rule = $config['default_rule'];
+            } else {
+                $rule = $params['rule'];
             }
+
             if (!isset($config['rules'][$rule])) {
                 throw new \Exception($rule . ' cdn rule 不存在');
             }

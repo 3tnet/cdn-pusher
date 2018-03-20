@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "symfony/finder": "^3.3"
+        "symfony/finder": "~4.0"
     },
     "require-dev": {
         "laravel/laravel": "5.*"

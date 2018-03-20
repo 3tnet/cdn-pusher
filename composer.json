@@ -1,6 +1,7 @@
 {
     "name": "ty666/cdn-pusher",
     "description": "cdn pusher for laravel",
+    "type": "library",
     "authors": [
         {
             "name": "taoyu",
@@ -10,7 +11,7 @@
         }
     ],
     "require": {
-        "symfony/finder": "~4.0"
+        "symfony/finder": "^3.3|~4.0"
     },
     "require-dev": {
         "laravel/laravel": "5.*"

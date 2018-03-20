@@ -25,4 +25,5 @@ FILESYSTEM_CLOUD=qiniu
 ```
 # 使用
 `php artisan cdn:push`
+
 `php artisan cdn:push --rule=without_vendor`

@@ -12,6 +12,9 @@
     "require": {
         "symfony/finder": "^3.3"
     },
+    "require-dev": {
+        "laravel/laravel": "5.*"
+    },
     "autoload": {
         "psr-4": {
             "Ty666\\CdnPusher\\": "src/"

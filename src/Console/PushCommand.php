@@ -13,7 +13,7 @@ class PushCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cdn:push';
+    protected $signature = 'cdn:push {--rule=}';
 
     /**
      * The console command description.
@@ -22,15 +22,12 @@ class PushCommand extends Command
      */
     protected $description = 'Push assets to CDN';
 
-    protected $cdn;
 
     /**
      * Create a new command instance.
-     * @param Cdn $cdn
      */
-    public function __construct(Cdn $cdn)
+    public function __construct()
     {
-        $this->cdn = $cdn;
         parent::__construct();
     }
 
@@ -41,7 +38,12 @@ class PushCommand extends Command
      */
     public function handle()
     {
-        $this->cdn->pushCdn($this->output);
+        $rule = $this->option('rule');
+        /**
+         * @var Cdn $cdn
+         */
+        $cdn = app()->makeWith(Cdn::class, ['rule' => $rule]);
+        $cdn->pushCdn($this->output);
     }
 
 }

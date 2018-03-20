@@ -5,7 +5,7 @@
 # 安装
 `composer require ty666/cdn-pusher`
 
-将以下数组添加到 `config/app.php` 中 (laravel5.5 跳过此步骤)
+将以下数组添加到 `config/app.php` 中 (laravel5.5+ 跳过此步骤)
 ```
 'providers' => array(
      //...

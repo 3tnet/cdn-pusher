@@ -13,7 +13,7 @@ class ClearCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cdn:clear';
+    protected $signature = 'cdn:clear {--rule=}';
 
     /**
      * The console command description.
@@ -22,16 +22,12 @@ class ClearCommand extends Command
      */
     protected $description = 'clear all assets from CDN';
 
-    protected $cdn;
 
     /**
      * Create a new command instance.
-     * @param Cdn $cdn
-     * @return void
      */
-    public function __construct(Cdn $cdn)
+    public function __construct()
     {
-        $this->cdn = $cdn;
         parent::__construct();
     }
 
@@ -42,6 +38,11 @@ class ClearCommand extends Command
      */
     public function handle()
     {
-        $this->clearCdn($this->output);
+        $rule = $this->option('rule');
+        /**
+         * @var Cdn $cdn
+         */
+        $cdn = app()->makeWith(Cdn::class, ['rule' => $rule]);
+        $cdn->clearCdn($this->output);
     }
 }

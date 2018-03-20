@@ -46,10 +46,16 @@ class CdnPusherServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Cdn::class, function () {
+        $this->app->bind(Cdn::class, function ($rule = null) {
             $config = config('cdn');
-            $includeAsset = new IncludeAsset($config['include']);
-            $excludeAsset = new ExcludeAsset($config['exclude']);
+            if (is_null($rule)) {
+                $rule = $config['default_rule'];
+            }
+            if (!isset($config['rules'][$rule])) {
+                throw new \Exception($rule . ' cdn rule 不存在');
+            }
+            $includeAsset = new IncludeAsset($config['rules'][$rule]['include']);
+            $excludeAsset = new ExcludeAsset($config['rules'][$rule]['exclude']);
             return new Cdn(Finder::create(), $includeAsset, $excludeAsset);
         });
         $this->registerCommand();
@@ -58,12 +64,12 @@ class CdnPusherServiceProvider extends ServiceProvider
     public function registerCommand()
     {
         $this->app->singleton('cdn_pusher.push', function () {
-            return new PushCommand($this->app->make(Cdn::class));
+            return new PushCommand();
         });
         $this->commands('cdn_pusher.push');
 
         $this->app->singleton('cdn_pusher.clear', function () {
-            return new ClearCommand($this->app->make(Cdn::class));
+            return new ClearCommand();
         });
         $this->commands('cdn_pusher.clear');
     }
